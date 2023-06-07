@@ -57,10 +57,11 @@ def check_plgiarism(x, s_vectors):
 def checker():
     # Connect to mysql database
     try:
-        connection = mysql.connector.connect(host='http://127.0.0.1',
-                                            database='ppms-v2',
+        connection = mysql.connector.connect(host='containers-us-west-61.railway.app',
+                                            database='railway',
                                             user='root',
-                                            password='')
+                                            password='O9yf9B5hPVeKwK57LRhs',
+                                            port='5998')
 
         cursor = connection.cursor()
         sql_query = """SELECT report_id, data, file_name from reports"""
