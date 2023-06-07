@@ -8,7 +8,7 @@ import string
 from gensim.parsing.preprocessing import remove_stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -40,7 +40,7 @@ def check_plgiarism(x, s_vectors):
             for student_b, text_vector_b in new_vectors:
                 sim_score = similarity(text_vector_a, text_vector_b)[0][1]
                 if (sim_score > 0):
-                    sim_score = round(sim_score, 1)
+                    sim_score = round(sim_score, 2)
                     # student_pair = sorted((os.path.splitext(student_a)[0], os.path.splitext(student_b[0])))
                     res = (student_a+' similar to '+student_b)
                     similarity_result[res] = sim_score
@@ -50,16 +50,17 @@ def check_plgiarism(x, s_vectors):
             return round(avg_sim_score, 2)
 
     api = json.dumps(similarity_result)
-    # print('api', api)
+    print('api', api)
+
 
 @app.route('/similarity-check', methods=['POST'])
 def checker():
     # Connect to mysql database
     try:
         connection = mysql.connector.connect(host='localhost',
-                                            database='ppms-v2',
-                                            user='root',
-                                            password='')
+                                             database='ppms',
+                                             user='root',
+                                             password='')
 
         cursor = connection.cursor()
         sql_query = """SELECT report_id, data, file_name from reports"""
@@ -68,7 +69,7 @@ def checker():
         record = cursor.fetchall()
 
         if (len(record) <= 1):
-            print(0)
+            return json.dumps(0)
         else:
             files_id_array = []
             files_array = []
@@ -89,15 +90,13 @@ def checker():
                     text += page.extractText()
 
                 filtered_text = preprocess_text(text)
-                files_content.append(text)
+                files_content.append(filtered_text)
 
             # student_files = [doc for doc in files_name_array if doc.endswith('.pdf')]
             student_files = [doc for doc in files_id_array]
 
             vectors = vectorize(files_content)
             s_vectors = list(zip(student_files, vectors))
-
-            #print(check_plgiarism(x, s_vectors))
 
             # Extract the input data from the request
             x = request.json['input']
@@ -109,8 +108,6 @@ def checker():
             # Return the model output as the response
             return json.dumps(output)
 
-        # k=input("press close to exit")
-
     except mysql.connector.Error as error:
         print("Failed to read BLOB data from MySQL table {}".format(error))
 
@@ -118,7 +115,7 @@ def checker():
         if connection.is_connected():
             cursor.close()
             connection.close()
-            # print("MySQL connection is closed")
+            print("MySQL connection is closed")
 
 if __name__ == '__main__':
     app.run()
