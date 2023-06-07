@@ -60,7 +60,8 @@ def checker():
         connection = mysql.connector.connect(host='containers-us-west-61.railway.app',
                                             database='railway',
                                             user='root',
-                                            password='O9yf9B5hPVeKwK57LRhs')
+                                            password='O9yf9B5hPVeKwK57LRhs',
+                                            port='5998')
 
         cursor = connection.cursor()
         sql_query = """SELECT report_id, data, file_name from reports"""
