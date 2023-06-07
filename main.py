@@ -107,7 +107,7 @@ def checker():
             output = check_plgiarism(x, s_vectors)
 
             # Return the model output as the response
-            return jsonify({'output': output})
+            return json.dumps(output)
 
         # k=input("press close to exit")
 
