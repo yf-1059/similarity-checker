@@ -53,14 +53,14 @@ def check_plgiarism(x, s_vectors):
     print('api', api)
 
 
-@app.route('/similarity-check', methods=['POST'])
+@app.route('/similarity-check', methods=['GET', 'POST'])
 def checker():
     # Connect to mysql database
     try:
-        connection = mysql.connector.connect(host='localhost',
-                                             database='ppms',
-                                             user='root',
-                                             password='')
+        connection = mysql.connector.connect(host='http://127.0.0.1',
+                                            database='ppms-v2',
+                                            user='root',
+                                            password='')
 
         cursor = connection.cursor()
         sql_query = """SELECT report_id, data, file_name from reports"""
@@ -116,6 +116,10 @@ def checker():
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
+
+@app.route("/")
+def index():
+    return "Testing"
 
 if __name__ == '__main__':
     app.run()
