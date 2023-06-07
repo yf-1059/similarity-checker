@@ -56,7 +56,7 @@ def check_plgiarism(x, s_vectors):
 def checker():
     # Connect to mysql database
     try:
-        connection = mysql.connector.connect(host='localhost',
+        connection = mysql.connector.connect(host='http://127.0.0.1',
                                             database='ppms-v2',
                                             user='root',
                                             password='')
