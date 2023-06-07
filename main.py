@@ -52,7 +52,7 @@ def check_plgiarism(x, s_vectors):
     api = json.dumps(similarity_result)
     # print('api', api)
 
-@app.route('/similarity-check', methods=['POST'])
+@app.route('/similarity-check', methods=['GET', 'POST'])
 def checker():
     # Connect to mysql database
     try:
@@ -119,6 +119,10 @@ def checker():
             cursor.close()
             connection.close()
             # print("MySQL connection is closed")
+
+@app.route("/")
+def index():
+    return "Testing"
 
 if __name__ == '__main__':
     app.run()
