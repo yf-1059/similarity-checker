@@ -28,7 +28,7 @@ def similarity(doc1, doc2):
     return cosine_similarity([doc1, doc2])
 
 
-def check_plgiarism(x, s_vectors):
+def check_plagiarism(x, s_vectors):
     similarity_result = {}
     total_sim_score = 0
 
@@ -103,7 +103,7 @@ def checker():
 
             # Process the input data and generate the model output
             # Replace this with your actual model code
-            output = check_plgiarism(x, s_vectors)
+            output = check_plagiarism(x, s_vectors)
 
             # Return the model output as the response
             return json.dumps(output)
