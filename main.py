@@ -67,7 +67,7 @@ def checker():
         userId = int(userId)
 
         connection = mysql.connector.connect(host='localhost',
-                                            database='ppms-v7',
+                                            database='ppms',
                                             user='root',
                                             password='')
 
