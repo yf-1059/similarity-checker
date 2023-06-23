@@ -47,8 +47,9 @@ def check_plagiarism(reportId, s_vectors):
                     similarity_result[res] = sim_score
                     total_sim_score = sim_score + total_sim_score
 
-            avg_sim_score = total_sim_score / len(new_vectors)
-            return round(avg_sim_score, 2)
+            avg_sim_score = (total_sim_score / len(new_vectors)) * 100
+            
+            return round(avg_sim_score)
 
     api = json.dumps(similarity_result)
     print('api', api)
